@@ -1,0 +1,139 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- 180 Video Sphere (use half-sphere for 180) -->
+        <!--
+        SOURCE
+        Author: Bitmovin
+        URL:    https://bitmovin.com/demos/vr-360
+        -->
+        <video id="video"
+               loop
+               crossorigin="anonymous"
+               playsinline webkit-playsinline
+               src="https://cdn.bitmovin.com/content/assets/playhouse-vr/progressive.mp4">
+        </video>
+      </a-assets>
+      <!-- <a-videosphere
+        rotation="0 -90 0" src="#video"
+        play-on-click>
+      </a-videosphere> -->
+
+      <!-- Camera -->
+      <a-camera id="camera" camera wasd-controls look-controls position="0 1.6 0">
+        <a-entity
+          position="0 0 -1.5"
+          text="align:center;
+                width:6;
+                wrapCount:100;
+                color: white;
+                value: Click or tap to start video"
+          hide-on-play="#video">
+        </a-entity>
+      </a-camera>
+
+      <a-entity id="avatar"
+        gltf-model="#avatarModel"
+        position="0 0 -3"
+        scale="1 1 1">
+      </a-entity>
+     <a-assets>
+        <a-asset-item id="avatarModel" src="./assets/avatar.glb"></a-asset-item>
+      </a-assets>
+      
+    </a-scene>
+
+    <script>
+        console.log('Hello, A-Frame2!');
+            /* global AFRAME */
+            AFRAME.registerComponent('play-on-click', {
+            init: function () {
+                this.onClick = this.onClick.bind(this);
+            },
+            play: function () {
+                window.addEventListener('click', this.onClick);
+            },
+            pause: function () {
+                window.removeEventListener('click', this.onClick);
+            },
+            onClick: function (evt) {
+                console.log('click');
+                var videoEl = this.el.getAttribute('material').src;
+                if (!videoEl) { return; }
+                this.el.object3D.visible = true;
+                videoEl.play();
+            }
+        });
+
+        /* global AFRAME */
+        AFRAME.registerComponent('hide-on-play', {
+            schema: {type: 'selector'},
+            init: function () {
+                this.onPlaying = this.onPlaying.bind(this);
+                this.onPause = this.onPause.bind(this);
+                this.el.object3D.visible = !this.data.playing;
+            },
+            play: function () {
+                if (this.data) {
+                this.data.addEventListener('playing', this.onPlaying);
+                this.data.addEventListener('pause', this.onPause);
+                }
+            },
+            pause: function () {
+                if (this.data) {
+                this.data.removeEventListener('playing', this.onPlaying);
+                this.data.removeEventListener('pause', this.onPause);
+                }
+            },
+            onPlaying: function (evt) {
+                this.el.object3D.visible = false;
+            },
+            onPause: function (evt) {
+                this.el.object3D.visible = true;
+            }
+        });
+
+        AFRAME.registerComponent('follow-camera', {
+            tick: function () {
+                const avatar = this.el;
+                const camera = document.querySelector('#camera');
+                const camObj = camera.object3D;
+
+
+                // Ensure the camera object exists
+                if (!camObj) {
+                    console.error('Camera object not found');
+                    return;
+                }
+                console.log('camera', avatar.object3D.position);
+                // console.log('camera', avatar.object3D.position);
+                // Get the camera's world position and direction
+                const camPos = new THREE.Vector3();
+                const camDir = new THREE.Vector3();
+                console.log('camPos', camPos);
+                console.log('camDir', camDir);
+                camObj.getWorldPosition(camPos);
+                camObj.getWorldDirection(camDir);
+                console.log('camPos', camPos);
+                console.log('camDir', camDir);
+                
+                // Normalize the direction vector to ensure consistent movement
+                camDir.normalize();
+
+                // Set the avatar's position to be a fixed distance in front of the camera
+                // const distance = 10; // Distance in front of the camera
+                // const newPos = camPos.clone().add(camDir.multiplyScalar(distance));
+                avatar.object3D.position.set(0, 0, -3);
+
+                // Optional: Make the avatar face the camera
+                avatar.object3D.lookAt(camPos);
+            }
+        });
+
+        document.querySelector('#avatar').setAttribute('follow-camera', '');
+    </script>
+  </body>
+</html>
