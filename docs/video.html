@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-rounded@1.0.3/lib/rounded.min.js"></script>
+    <script src="./js/video-player.js"></script>
+    <script src="./js/speech-recog.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- 180 Video Sphere (use half-sphere for 180) -->
+        <!--
+        SOURCE
+        Author: Bitmovin
+        URL:    https://bitmovin.com/demos/vr-360
+        -->
+      <video id="video"
+             loop
+             crossorigin="anonymous"
+             playsinline webkit-playsinline
+             src="https://cdn.bitmovin.com/content/assets/playhouse-vr/progressive.mp4">
+      </video>
+      <a-videosphere
+        rotation="0 -90 0" src="#video"
+        play-on-click>
+      </a-videosphere>
+
+      <!-- Camera -->
+      <a-camera id="camera" camera wasd-controls look-controls position="0 1.6 0">
+        <a-entity
+          position="0 0 -1.5"
+          text="align:center;
+                width:6;
+                wrapCount:100;
+                color: white;
+                value: Click or tap to start video"
+          hide-on-play="#video">
+        </a-entity>
+        <a-entity id="avatar"
+          gltf-model="#avatarModel"
+          position="-1 -1 -2"
+          rotation="-30 30 0"
+          scale="0.5 0.5 0.5">
+        </a-entity>
+        <!-- Text above the avatar -->
+        <!-- Speech bubble for text above the avatar -->
+        <a-entity id="speechBubble" position="-1 0.5 -2">
+          <!-- Background box -->
+          <a-rounded
+            position="-2 -1.2 -2"
+            width="2.2"
+            height="2"
+            rotation="0 20 0"
+            radius="0.1">
+          </a-rounded>
+          <!-- Text inside the box -->
+          <a-entity
+            id="avatarText"
+            position="0.1 -0.1 0"
+            rotation="0 20 0"
+            width="1" 
+            text="align:center;
+                  width:1;
+                  wrapCount:20;
+                  color: red;
+  
+                  value: 鑑;">
+          </a-entity>
+        </a-entity>
+      </a-camera>
+      <a-assets>
+        <a-asset-item id="avatarModel" src="./assets/avatar.glb"></a-asset-item>
+      </a-assets>
+    </a-scene>
+  </body>
+</html>
