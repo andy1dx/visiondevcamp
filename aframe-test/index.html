@@ -17,10 +17,10 @@
                src="https://cdn.bitmovin.com/content/assets/playhouse-vr/progressive.mp4">
         </video>
       </a-assets>
-      <!-- <a-videosphere
+      <a-videosphere
         rotation="0 -90 0" src="#video"
         play-on-click>
-      </a-videosphere> -->
+      </a-videosphere>
 
       <!-- Camera -->
       <a-camera id="camera" camera wasd-controls look-controls position="0 1.6 0">
@@ -113,20 +113,16 @@
                 // Get the camera's world position and direction
                 const camPos = new THREE.Vector3();
                 const camDir = new THREE.Vector3();
-                console.log('camPos', camPos);
-                console.log('camDir', camDir);
                 camObj.getWorldPosition(camPos);
                 camObj.getWorldDirection(camDir);
-                console.log('camPos', camPos);
-                console.log('camDir', camDir);
-                
+
                 // Normalize the direction vector to ensure consistent movement
                 camDir.normalize();
 
                 // Set the avatar's position to be a fixed distance in front of the camera
                 // const distance = 10; // Distance in front of the camera
                 // const newPos = camPos.clone().add(camDir.multiplyScalar(distance));
-                avatar.object3D.position.set(0, 0, -3);
+                // avatar.object3D.position.set(newPos.x, camPos.y, newPos.z);
 
                 // Optional: Make the avatar face the camera
                 avatar.object3D.lookAt(camPos);
