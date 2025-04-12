@@ -25,16 +25,7 @@
       </a-videosphere>
 
       <!-- Camera -->
-      <a-camera id="camera" camera look-controls position="0 1.6 0">
-        <a-entity
-          position="0 0 -1.5"
-          text="align:center;
-                width:6;
-                wrapCount:100;
-                color: white;
-                value: Click or tap to start video"
-          hide-on-play="#video">
-        </a-entity>
+      <a-camera id="camera" camera wasd-controls look-controls position="0 1.6 0">
         <a-entity id="avatar"
           gltf-model="#avatarModel"
           position="0 -1 -2"
