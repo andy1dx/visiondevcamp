@@ -12,10 +12,19 @@
 
       <!-- Camera and controls -->
       <a-camera id="camera" camera wasd-controls look-controls position="0 1.6 0">
+        <a-entity
+          position="0 0 -1.5"
+          text="align:center;
+                width:6;
+                wrapCount:100;
+                color: white;
+                value: Click or tap to start video"
+          hide-on-play="#video">
+        </a-entity>
         <a-entity id="avatar"
           gltf-model="#avatarModel"
-          position="-1 -1 -2"
-          rotation="-30 30 0"
+          position="0 -1 -2"
+          rotation="-30 0 0"
           scale="0.5 0.5 0.5">
         </a-entity>
         <!-- Text above the avatar -->
@@ -23,23 +32,23 @@
         <a-entity id="speechBubble" position="-1 0.5 -2">
           <!-- Background box -->
           <a-rounded
-            position="-2 -1.2 -2"
+            position="0 -1.2 -2"
             width="2.2"
             height="2"
-            rotation="0 20 0"
+            rotation="0 0 0"
             radius="0.1">
           </a-rounded>
           <!-- Text inside the box -->
           <a-entity
             id="avatarText"
-            position="0.1 -0.1 0"
-            rotation="0 20 0"
+            position="1.1 0 0"
+            rotation="0 0 0"
             width="1" 
             text="align:center;
                   width:1;
                   wrapCount:20;
                   color: red;
-                  value: Avatar Name Name Name NameNameName">
+                  value: asdasdsadsasdasdas;">
           </a-entity>
         </a-entity>
       </a-camera>
