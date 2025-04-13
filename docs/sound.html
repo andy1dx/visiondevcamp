@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 999;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 14px;
+      margin-right: 5px;
+    }
+  </style>
+  <body>
+    <!-- Overlay Buttons -->
+    <div id="overlay">
+      <button onclick="startRecording()">Start Recording</button>
+      <button onclick="stopRecording()">Stop & Download</button>
+    </div>
+      
+    <a-scene>
+      <a-entity id="recorder" audio-recorder></a-entity>
+      <a-box position="0 1 -3" color="#4CC3D9" event-set__click="_event: click; color: red"></a-box>
+      <a-camera></a-camera>
+    </a-scene>
+  </body>
+
+  <script>
+    let mediaRecorder;
+    let audioChunks = [];
+
+    async function initRecorder() {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = event => {
+        if (event.data.size > 0) {
+          audioChunks.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(audioChunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'recorded-audio.webm';
+        a.click();
+        audioChunks = [];
+      };
+    }
+
+    async function startRecording() {
+      if (!mediaRecorder) {
+        await initRecorder();
+      }
+      mediaRecorder.start();
+      console.log("Recording started");
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+        console.log("Recording stopped");
+      }
+    }
+  </script>
+</html>
